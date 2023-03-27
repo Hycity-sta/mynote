@@ -1,3 +1,8 @@
+/**
+ * 这里是栈的顺序存储
+ * 还有共享栈
+ **/
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -66,6 +71,19 @@ typedef struct SqDoubleStack {
 typedef PtoDoubleStack DoubleStack;
 
 /**
+ * 初始化共享栈
+ * 两个栈共享一个数组
+ * 当栈1为空时,top为-1
+ * 当栈2为空时,top为maxsize
+ **/
+DoubleStack EmptyDoubleStack(DoubleStack s) {
+    s = (DoubleStack)malloc(sizeof(struct SqDoubleStack));
+    s->top1=-1;
+    s->top2=MAXSIZE;
+    return s;
+}
+
+/**
  * 共享栈的插入
  * e是要插入的元素
  * stackNumber是指定要插入哪一个栈
@@ -83,6 +101,28 @@ Status Push_double(DoubleStack s, ElemType e, int stackNumber) {
     }
     return OK;
 }
+
+/**
+ * 共享栈的弹出
+ * 用e返回值
+ * 用stackNumber来判断是哪个栈
+ **/
+Status Pop_double(DoubleStack s, ElemType * e, int stackNumber) {
+    if (stackNumber == 1) {
+        if (s->top1==-1) {
+            return ERROR; //栈1是空栈
+        }
+        *e = s->data[s->top1--]; //先赋值再top--
+    }
+    else if (stackNumber == 2) {
+        if (s->top2 == MAXSIZE) {
+            return ERROR; //栈二是空的
+        }
+        *e = s->data[s->top2++]; //先赋值再运算
+    }
+    return OK;
+}
+
 
 int main() {
     Stack my = EmptyStack(my);
