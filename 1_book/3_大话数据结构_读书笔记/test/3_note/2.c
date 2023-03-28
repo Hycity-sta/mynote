@@ -40,6 +40,13 @@ LinkStackNode EmptyLinkStackNode(LinkStackNode n) {
 
 //初始化一个链式栈出来
 //这是一个空栈,栈顶是空的
+//如果追求安全才做这一步,将栈的计数器归零并把指针指向null
+LinkStack EmptyLinkStack(LinkStack s) {
+    s = (LinkStack)malloc(sizeof(struct LinkStack));
+    s->top = NULL;
+    s->count = 0;
+    return s;
+}
 
 
 /**
@@ -62,3 +69,31 @@ Status Push(LinkStack s, ElemType e) {
 //[my]->[a1(top)]
 //[my(top)]->[a1]
 //栈底是链表的尾部
+
+
+//链式栈的出栈操作
+Status Pop(LinkStack s, ElemType *e) {
+    LinkStackNode p;
+    if (s->count == 0) {
+        return ERROR;//栈是空的,错误
+    }
+
+    *e = s->top->data;//将栈顶数据存到e
+
+    p = s->top; //通过中间节点来操控栈顶节点
+    s->top = s->top->next;
+
+    free(p);//释放掉栈顶结点的内存
+    s->count--;//将计数器减一
+    return OK;
+}
+
+int main() {
+    LinkStack s = EmptyLinkStack(s);
+    Push(s,5);
+    Push(s,4);
+    int d;
+    Pop(s,&d);
+    printf("%d",s->top->data);
+    printf("%d",d);
+}
