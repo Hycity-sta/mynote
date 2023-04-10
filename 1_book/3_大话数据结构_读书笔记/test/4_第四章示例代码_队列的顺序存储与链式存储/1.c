@@ -1,8 +1,8 @@
 // 这儿是队列的顺序存储
 // 需要注意的是,这里队列的满队条件是留下一个数组空间,而不是全部占满.
-// 如果是全部占满的话,处理起来会与下面的代码不一样.
-// 这里是循环队列,属于一种特殊情况.
-// 对于一般的队列,实现方法与顺序表差不多,所以这里不写示例了
+// 如果是全部占满的话,处理起来会与下面的代码不一样,而且会很麻烦
+// 以下代码都是是循环队列,属于一种特殊情况.
+// 对于一般的队列,实现方法与顺序表差不多,只需要满足队列的操作要求即可所以这里不写示例了
 // 因为循环队列是为了处理顺序表中需要移动元素还有假上溢的缺陷
 
 /**
@@ -26,7 +26,7 @@ typedef int Status;
 
 struct SqQueue {
     ElemType data[MAXSIZE];
-    int front; //队头
+    int front; //队头 都是下标
     int rear; //队尾
 };
 typedef struct SqQueue * Ptosq;
@@ -78,3 +78,10 @@ int main(int argc, char *argv[])
     printf("%d",b);
     return 0;
 }
+
+//最重要的运算公式
+//(q->rear+1) % MAXSIZE == q->front 判断队列是满的
+//q->rear = (q->rear+1)  %MAXSIZE 在入队之后对rear的操作
+//q->front = q->front+1 %MAXSIZE 在出队之后对front的操作
+//q->front = q->rear 判断队列是空的
+//(q->rear - q->front + MAXSIZE) % MAXSIZE 获取队列的长度
